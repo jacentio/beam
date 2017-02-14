@@ -73,11 +73,9 @@ class Beam(object):
             if 'BEAM_PORTS' not in container['Config']['Labels']:
                 return services
             else:
-                # only_services = [x for x in
-                # container['Config']['Labels']['BEAM_PORTS'] if '/' in x else
-                # '{}/tcp'.format(x)]
                 only_services = [
-                    x if '/' in x else '{}/tcp'.format(x) for x in container['Config']['Labels']['BEAM_PORTS']]
+                    x if '/' in x else '{}/tcp'.format(x) for x in
+                    container['Config']['Labels']['BEAM_PORTS']]
 
         if self.args.internal:
             for service in container['Config']['ExposedPorts'].keys():
