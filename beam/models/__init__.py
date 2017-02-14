@@ -1,0 +1,2 @@
+class BeamObject(object):
+    pass
