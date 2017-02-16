@@ -28,7 +28,9 @@ class Service(BeamObject):
                         k, type(var), v))
 
     def generate_id(self):
-        (name, port) = self.name.split('-')
+        s = self.name.split('-')
+        name = '-'.join(s[:-1])
+        port = s[-1]
 
         service_id = "{ip}:{name}:{port}:{proto}".format(
             ip=self.ip, name=name, port=port, proto=self.proto)

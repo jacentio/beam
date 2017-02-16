@@ -53,7 +53,7 @@ class Beam(object):
 
     def import_driver(self, d):
         self.log.debug('Initiating {} backend driver'.format(d))
-        p = 'beam.drivers.{}'.format(d.lower())
+        p = 'beam.drivers.{}_driver'.format(d.lower())
 
         mod = import_module(p)
         met = getattr(mod, d.capitalize())
@@ -118,7 +118,9 @@ class Beam(object):
     def get_service_attributes(self, service, container):
         attributes = {}
 
-        (name, container_port) = service.name.split('-')
+        s = service.name.split('-')
+        name = '-'.join(s[:-1])
+        container_port = s[-1]
 
         for k, v in container['Config']['Labels'].iteritems():
             if k.startswith('BEAM_') and not k[5].isdigit():
@@ -149,7 +151,9 @@ class Beam(object):
     def get_service_tags(self, service, container):
         tags = set()
 
-        (name, container_port) = service.name.split('-')
+        s = service.name.split('-')
+        name = '-'.join(s[:-1])
+        container_port = s[-1]
 
         try:
             tags |= set(container['Config']['Labels']['BEAM_TAGS'].split(','))
