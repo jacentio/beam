@@ -28,7 +28,7 @@ class Etcd(Driver):
             'version_prefix',
                 'allow_redirect']:
             try:
-                cfg[attr] = os.environ['ETCD_{}'.format(attr.capitalize())]
+                cfg[attr] = os.environ['ETCD_{}'.format(attr.upper())]
             except KeyError:
                 pass
 
