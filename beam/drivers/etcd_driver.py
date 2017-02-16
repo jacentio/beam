@@ -36,12 +36,19 @@ class Etcd(Driver):
 
     def add(self, service, ttl):
 
-        #print self.get_services()
+        # print self.get_services()
         etcd_key = '/services/{}'.format(service.name)
 
-        self.client.write('{}/containers/{}/ip'.format(etcd_key, service.id), service.ip, ttl=ttl)
-        self.client.write('{}/containers/{}/port'.format(etcd_key, service.id), service.port, ttl=ttl)
-        self.client.write('{}/containers/{}/proto'.format(etcd_key, service.id), service.proto, ttl=ttl)
+        self.client.write('{}/containers/{}/ip'.format(etcd_key,
+                                                       service.id),
+                          service.ip,
+                          ttl=ttl)
+        self.client.write(
+            '{}/containers/{}/port'.format(etcd_key, service.id),
+            service.port, ttl=ttl)
+        self.client.write(
+            '{}/containers/{}/proto'.format(etcd_key, service.id),
+            service.proto, ttl=ttl)
         self.client.write(
             '{}/attributes'.format(etcd_key),
             json.dumps(

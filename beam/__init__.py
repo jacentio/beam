@@ -86,7 +86,8 @@ class Beam(object):
 
                 s = Service()
                 try:
-                    s.name = container['Config']['Labels']['com.docker.swarm.service.id']
+                    s.name = container['Config']['Labels'][
+                        'com.docker.swarm.service.id']
                 except KeyError:
                     s.name = '{}-{}'.format(
                         container['Name'].lstrip('/'), container_port)
@@ -110,7 +111,8 @@ class Beam(object):
 
                 s = Service()
                 try:
-                    s.name = container['Config']['Labels']['com.docker.swarm.service.id']
+                    s.name = container['Config']['Labels'][
+                        'com.docker.swarm.service.id']
                 except KeyError:
                     s.name = '{}-{}'.format(
                         container['Name'].lstrip('/'), container_port)
