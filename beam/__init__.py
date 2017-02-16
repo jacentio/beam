@@ -119,7 +119,6 @@ class Beam(object):
         attributes = {}
 
         s = service.name.split('-')
-        name = '-'.join(s[:-1])
         container_port = s[-1]
 
         for k, v in container['Config']['Labels'].iteritems():
@@ -152,7 +151,6 @@ class Beam(object):
         tags = set()
 
         s = service.name.split('-')
-        name = '-'.join(s[:-1])
         container_port = s[-1]
 
         try:
