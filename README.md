@@ -7,6 +7,10 @@ Beam is a flexible Docker service discovery tool. It periodically polls the loca
 
 The only backend registry currently supported is EtcD, although contributions are welcome for others.
 
+## Running Beam ##
+
+`docker run -d --name=beam --net=host --volume=/var/run/docker.sock:/tmp/docker.sock beam --drivers etcd`
+
 ## Development Usage ##
 
 Beam can be ran by cloning the repo and running;

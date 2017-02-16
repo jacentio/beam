@@ -18,6 +18,6 @@ setup(
     ],
     packages=find_packages(),
     scripts=[
-        'bin/beam'
+        'scripts/run.py'
     ]
 )
