@@ -85,11 +85,15 @@ class Beam(object):
                 (container_port, proto) = service.split('/')
 
                 s = Service()
-                s.name = '{}-{}'.format(
-                    container['Name'].lstrip('/'), container_port)
+                try:
+                    s.name = container['Config']['Labels']['com.docker.swarm.service.id']
+                except KeyError:
+                    s.name = '{}-{}'.format(
+                        container['Name'].lstrip('/'), container_port)
                 s.ip = self.args.hostname
                 s.port = container_port
                 s.proto = proto
+                s.id = container['Config']['Hostname']
 
                 services.append(s)
         else:
@@ -105,11 +109,15 @@ class Beam(object):
                 (container_port, proto) = service.split('/')
 
                 s = Service()
-                s.name = '{}-{}'.format(
-                    container['Name'].lstrip('/'), container_port)
+                try:
+                    s.name = container['Config']['Labels']['com.docker.swarm.service.id']
+                except KeyError:
+                    s.name = '{}-{}'.format(
+                        container['Name'].lstrip('/'), container_port)
                 s.ip = self.args.hostname
                 s.port = cfg['HostPort']
                 s.proto = proto
+                s.id = container['Config']['Hostname']
 
                 services.append(s)
 
@@ -175,8 +183,6 @@ class Beam(object):
         for service in services:
             service.attrs = self.get_service_attributes(service, container)
             service.tags = self.get_service_tags(service, container)
-
-            service.id = service.generate_id()
 
             [driver.add(service, self.args.ttl) for driver in self.drivers]
 

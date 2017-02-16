@@ -35,11 +35,13 @@ class Etcd(Driver):
         return cfg
 
     def add(self, service, ttl):
-        etcd_key = '/services/{}/{}'.format(service.name, service.id)
 
-        self.client.write('{}/ip'.format(etcd_key), service.ip, ttl=ttl)
-        self.client.write('{}/port'.format(etcd_key), service.port, ttl=ttl)
-        self.client.write('{}/proto'.format(etcd_key), service.proto, ttl=ttl)
+        #print self.get_services()
+        etcd_key = '/services/{}'.format(service.name)
+
+        self.client.write('{}/containers/{}/ip'.format(etcd_key, service.id), service.ip, ttl=ttl)
+        self.client.write('{}/containers/{}/port'.format(etcd_key, service.id), service.port, ttl=ttl)
+        self.client.write('{}/containers/{}/proto'.format(etcd_key, service.id), service.proto, ttl=ttl)
         self.client.write(
             '{}/attributes'.format(etcd_key),
             json.dumps(
