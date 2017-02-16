@@ -1,26 +1,19 @@
 from beam.models import BeamObject
 
 
-class Service(BeamObject):
-    ATTR_TYPES = {"id": str,
-                  "name": str,
-                  "ip": str,
-                  "port": int,
-                  "tags": list,
-                  "attrs": dict,
-                  "proto": str}
+ATTR_TYPES = {"id": str,
+              "name": str,
+              "ip": str,
+              "port": int,
+              "tags": list,
+              "attrs": dict,
+              "proto": str}
 
-    def __init__(self):
-        self.id = None
-        self.name = None
-        self.ip = None
-        self.port = None
-        self.tags = []
-        self.attrs = {}
-        self.proto = "tcp"
+
+class Service(BeamObject):
 
     def validate(self):
-        for k, v in Service.ATTR_TYPES.iteritems():
+        for k, v in ATTR_TYPES.iteritems():
             var = getattr(self, k)
             if not isinstance(var, v):
                 raise AttributeError(

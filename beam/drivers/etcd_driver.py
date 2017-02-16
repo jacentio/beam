@@ -7,6 +7,7 @@ from beam.models.driver import Driver
 class Etcd(Driver):
 
     def __init__(self):
+        super(Etcd, self).__init__()
         self.init_client()
 
     def init_client(self):

@@ -1,2 +1,7 @@
+import logging
+
+
 class BeamObject(object):
-    pass
+
+    def __init__(self):
+        self.log = logging.getLogger()

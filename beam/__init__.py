@@ -1,22 +1,36 @@
 import argparse
 import docker
+import logging
+from pythonjsonlogger import jsonlogger
 from importlib import import_module
 from time import time, sleep
-from logging import getLogger
 
 from beam.models.service import Service
 
 
+EXCLUDED_ATTRIBUTES = [
+    'TAGS'
+]
+
+
 class Beam(object):
-    EXCLUDED_ATTRIBUTES = [
-        'TAGS'
-    ]
 
     def __init__(self):
-        self.log = getLogger()
+        self.log = self.init_logger()
         self.args = self.parse_args()
         self.init_drivers()
         self.init_client()
+
+    def init_logger(self):
+        logger = logging.getLogger()
+        logger.setLevel(logging.DEBUG)
+
+        logHandler = logging.StreamHandler()
+        formatter = jsonlogger.JsonFormatter()
+        logHandler.setFormatter(formatter)
+        logger.addHandler(logHandler)
+
+        return logger
 
     def init_client(self):
         self.log.debug(
@@ -135,7 +149,7 @@ class Beam(object):
             if k.startswith('BEAM_') and not k[5].isdigit():
                 attr_key = k.replace('BEAM_', '')
 
-                if attr_key in Beam.EXCLUDED_ATTRIBUTES:
+                if attr_key in EXCLUDED_ATTRIBUTES:
                     continue
 
                 attributes[attr_key] = v
@@ -150,7 +164,7 @@ class Beam(object):
                         container_port,
                         service.proto.upper()), '')
 
-                if attr_key in Beam.EXCLUDED_ATTRIBUTES:
+                if attr_key in EXCLUDED_ATTRIBUTES:
                     continue
 
                 attributes[attr_key] = v
