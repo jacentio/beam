@@ -2,7 +2,7 @@ Beam
 ====================
 
 [![Build Status](https://travis-ci.org/jacentio/beam.svg?branch=master)](https://travis-ci.org/jacentio/beam)
-[![Codecov](https://img.shields.io/codecov/c/github/jacentio/beam.svg)](https://codecov.io/github/jacentio/beam?branch=master)
+[![codecov](https://codecov.io/gh/jacentio/beam/branch/master/graph/badge.svg)](https://codecov.io/gh/jacentio/beam)
 
 Beam is a flexible Docker service discovery tool. It periodically polls the locally running Docker containers then submits that data to one or more backend registries. 
 
