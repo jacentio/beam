@@ -1,3 +1,4 @@
+tox
 pytest
-codecov
 pytest-cov
+codecov
