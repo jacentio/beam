@@ -1,8 +1,9 @@
+import sys
 from beam import Beam
 
 
 def main():
-    b = Beam()
+    b = Beam(sys.argv[1:])
     b.run()
 
 

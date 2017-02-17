@@ -15,9 +15,9 @@ EXCLUDED_ATTRIBUTES = [
 
 class Beam(object):
 
-    def __init__(self):
+    def __init__(self, args=[]):
         self.log = self.init_logger()
-        self.args = self.parse_args()
+        self.args = self.parse_args(args)
         self.init_drivers()
         self.init_client()
 
@@ -40,7 +40,7 @@ class Beam(object):
             base_url='unix://{}'.format(self.args.socket))
         return self.dc
 
-    def parse_args(self):
+    def parse_args(self, args):
         parser = argparse.ArgumentParser(
             description='Flexible Docker Service Discovery')
         parser.add_argument('--drivers', nargs='+')
@@ -60,7 +60,7 @@ class Beam(object):
         parser.set_defaults(socket="/tmp/docker.sock")
         parser.set_defaults(ttl=30)
 
-        return parser.parse_args()
+        return parser.parse_args(args)
 
     def get_ip_address(self):
         return '192.168.1.1'
