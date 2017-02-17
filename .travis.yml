@@ -1,21 +1,10 @@
 language: python
 python:
-- "2.7"
-env:
-- TOXENV=py27
-- TOXENV=py35
-- TOXENV=pypy
+  - 2.7
+  - 3.5
 install:
-- 'pip install flake8 codecov tox'
-before_script:
-- 'flake8 .'
+  - pip install -r tests/requirements.txt
 script:
-- tox
+  - tox
 after_success:
-- codecov
-notifications:
-  slack:
-    rooms:
-      secure: 3rlZyNVFGL8KSG7AHFmZn7GldpS7TT8FbeL5Db+ReUicxu08wVBS7s5H9gsgtZqU9aHIs+ofGIbTkCFCnBVmoYFU5DpR3eyRnxDKmIWrOZvAihsjPNlvUefdbZlQ2cyMhm2EiaFI685BMzbUULptxO+aZVQwp9ApKkAfCckPifUnrm8zqtukUVFYi1szokQhYa9wighNmFDqWR59wxuUm1i+7iND/54JKyRGdiGc7divmwNGE+orAKzxbx4eBuVLtdSnfBmHpc/QlQRbynQPZf/DopZxJgPs2/Ak+ImyDq0UoQS/I0+t/qUhOb1ThBaQzI6tr1oT4gIL9cjwQhhbOy3GJ2ZwI7xbQH4oyXySZFzO5X4T385BSfAWEBpLxWLJk7BjkcaBxbwyZ6pbF5iK8U4Zj4AfEYJcGqY8lqD7b2sS2nk7gx5gy8DJlDoozfs2K7ox7Kyza7+4p/JXCcZQe3bj/3Utd6WycwVFerQ+jUutZGeHpRHpIIvROfk14SwY6hD5ZqnwVEtM9gCD1GwZn+7avyJMtn2RF6RzHgP3hqMAvycxj7+95kkVX4eL08gKInmwGDzthLUHFWE8Ud9s+qp3KZ5SYIAE+H65rUtZ/RNKVAU0n4jUC7R27VLndYPRHw9eCh30labHlTqtDcNGFwoCMlsB1v02QLNglBClGZg=
-    on_success: change # default: always
-    on_failure: always # default: always
+  - codecov
