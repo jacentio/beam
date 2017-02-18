@@ -9,7 +9,7 @@ install:
 - docker pull redis
 - bash beam/drivers/tests/start_etcd.sh
 - pip install -r requirements.txt
-- pip install -r tests/requirements.txt
+- pip install -r beam/tests/requirements.txt
 script:
 - tox
 after_success:
