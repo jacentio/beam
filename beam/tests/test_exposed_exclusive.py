@@ -13,17 +13,6 @@ def working_client():
     conts = b.dc.containers.list()
     [cont.remove(force=True) for cont in conts]
 
-def test_logger(working_client):
-    assert isinstance(working_client.log, logging.Logger)
-
-
-def test_docker_client(working_client):
-    assert isinstance(working_client.dc, docker.DockerClient)
-
-
-def test_empty_drivers_list(working_client):
-    assert len(working_client.drivers) == 0
-
 
 def test_registering_no_exposed_services(working_client):
     container = working_client.dc.containers.run("redis", detach=True)
@@ -36,6 +25,15 @@ def test_registering_no_exposed_services(working_client):
 def test_registering_exposed_excluded_services(working_client):
     container = working_client.dc.containers.run(
         "redis", detach=True, ports={'6379/tcp': 16379})
+
+    services = working_client.get_services_to_register(container.attrs)
+
+    assert len(services) == 0
+
+
+def test_registering_exposed_included_services_miss(working_client):
+    container = working_client.dc.containers.run(
+        "redis", detach=True, ports={'6379/tcp': 16379}, labels={"BEAM_PORTS": "56379/tcp"})
 
     services = working_client.get_services_to_register(container.attrs)
 
