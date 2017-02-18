@@ -119,11 +119,11 @@ class Beam(object):
                 services.append(s)
         else:
             try:
-                ports = container['NetworkSettings']['Ports'].iteritems()
+                ports = container['HostConfig']['PortBindings'].iteritems()
             except AttributeError:
                 return services
 
-            for service, cfg in ports.iteritems():
+            for service, cfg in ports:
                 try:
                     cfg = cfg[0]
                 except TypeError:

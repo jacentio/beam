@@ -6,6 +6,7 @@ services:
 python:
   - 2.7
 install:
+- docker pull redis
 - pip install -r requirements.txt
 - pip install -r tests/requirements.txt
 script:

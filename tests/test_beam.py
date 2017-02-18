@@ -1,6 +1,7 @@
 import pytest
 import logging
 import docker
+import json
 
 @pytest.fixture
 def working_published_beam():
@@ -22,7 +23,6 @@ def test_empty_drivers_list(working_published_beam):
 	assert len(working_published_beam.drivers) == 0
 
 def test_registering_no_published_services(working_published_beam):
-	working_published_beam.dc.images.pull("redis")
 	container = working_published_beam.dc.containers.run("redis", detach=True)
 
 	services = working_published_beam.get_services_to_register(container.attrs)
@@ -31,8 +31,20 @@ def test_registering_no_published_services(working_published_beam):
 
         assert len(services) == 0
 
+def test_registering_published_services(working_published_beam):
+	container = working_published_beam.dc.containers.run("redis", detach=True, ports={'6379/tcp': 16379})
+
+        print json.dumps(container.attrs)
+
+	services = working_published_beam.get_services_to_register(container.attrs)
+
+	container.remove(force=True)
+
+        assert len(services) == 1
+	assert services[0].port == 16379
+	assert services[0].proto == "tcp"
+
 def test_registering_no_exposed_services(working_exposed_beam):
-	working_exposed_beam.dc.images.pull("redis")
 	container = working_exposed_beam.dc.containers.run("redis", detach=True)
 
 	services = working_exposed_beam.get_services_to_register(container.attrs)
