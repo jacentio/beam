@@ -4,8 +4,9 @@ sudo: required
 python:
   - 2.7
 install:
-  - travis_retry tests/install_docker.sh
+  - pip install -r requirements.txt
   - pip install -r tests/requirements.txt
+  - travis_retry tests/install_docker.sh
 script:
   - tox
 after_success:

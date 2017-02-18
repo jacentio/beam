@@ -16,4 +16,6 @@ if [[ $TRAVIS_OS_NAME == "linux" ]]; then
 	sudo apt-get update
 	sudo apt-get install docker-engine -y --force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 	sudo start docker || true
+	sudo docker info
+	sudo pip freeze
 fi
