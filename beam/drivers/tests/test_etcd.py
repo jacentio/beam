@@ -6,7 +6,8 @@ import docker
 @pytest.fixture
 def working_client():
     import beam
-    b = beam.Beam(["--socket", "/var/run/docker.sock", "--internal", "--drivers", "etcd"])
+    b = beam.Beam(["--socket", "/var/run/docker.sock",
+                   "--internal", "--drivers", "etcd"])
 
     yield b
 
@@ -22,6 +23,7 @@ def test_registered_driver(working_client):
 
 
 def test_registering_no_published_services(working_client):
-    container = working_client.dc.containers.run("redis", detach=True, labels={"EPHEMERAL": "true"})
+    container = working_client.dc.containers.run(
+        "redis", detach=True, labels={"EPHEMERAL": "true"})
 
     working_client.register_container(container.attrs)

@@ -32,7 +32,8 @@ class Etcd(Driver):
                 cfg[attr] = os.environ['ETCD_{}'.format(attr.upper())]
             except KeyError:
                 if attr == 'port':
-                    cfg[attr] = 2379 ## Set the default ETCD port if it's not provided
+                    # Set the default ETCD port if it's not provided
+                    cfg[attr] = 2379
                 pass
 
         return cfg

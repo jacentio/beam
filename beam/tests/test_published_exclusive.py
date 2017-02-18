@@ -33,7 +33,12 @@ def test_registering_published_excluded_services(working_client):
 
 def test_registering_published_included_services_miss(working_client):
     container = working_client.dc.containers.run(
-        "redis", detach=True, ports={'6379/tcp': 16379}, labels={"BEAM_PORTS": "36379/tcp"})
+        "redis",
+        detach=True,
+        ports={
+            '6379/tcp': 16379},
+        labels={
+            "BEAM_PORTS": "36379/tcp"})
 
     services = working_client.get_services_to_register(container.attrs)
 
@@ -42,7 +47,12 @@ def test_registering_published_included_services_miss(working_client):
 
 def test_registering_published_included_services(working_client):
     container = working_client.dc.containers.run(
-        "redis", detach=True, ports={'6379/tcp': 16379}, labels={"BEAM_PORTS": "6379/tcp"})
+        "redis",
+        detach=True,
+        ports={
+            '6379/tcp': 16379},
+        labels={
+            "BEAM_PORTS": "6379/tcp"})
 
     services = working_client.get_services_to_register(container.attrs)
 

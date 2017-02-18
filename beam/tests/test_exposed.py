@@ -134,7 +134,8 @@ def test_registering_exposed_service_with_default_attributes(working_client):
     assert attrs["TESTING"] == "foo"
 
 
-def test_registering_exposed_service_with_default_and_service_attributes(working_client):
+def test_registering_exposed_service_with_default_and_service_attributes(
+        working_client):
     container = working_client.dc.containers.run(
         "redis",
         detach=True,
@@ -163,7 +164,16 @@ def test_registering_exposed_service_with_default_and_service_attributes(working
 
 def test_registering_exposed_service_with_default_and_service_attributes_mix(
         working_client):
-    container = working_client.dc.containers.run("redis", detach=True, ports={'6379/tcp': 16379}, labels={"BEAM_TESTING": "foo", "BEAM_6379_TCP_TESTING": "bar", "BEAM_SHARED": "test_shared", "BEAM_6379_TCP_DEDICATED": "test_dedicated"})
+    container = working_client.dc.containers.run(
+        "redis",
+        detach=True,
+        ports={
+            '6379/tcp': 16379},
+        labels={
+            "BEAM_TESTING": "foo",
+            "BEAM_6379_TCP_TESTING": "bar",
+            "BEAM_SHARED": "test_shared",
+            "BEAM_6379_TCP_DEDICATED": "test_dedicated"})
 
     services = working_client.get_services_to_register(container.attrs)
 

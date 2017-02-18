@@ -6,7 +6,8 @@ import docker
 @pytest.fixture
 def working_client():
     import beam
-    b = beam.Beam(["--socket", "/var/run/docker.sock", "--exclusive", "--internal"])
+    b = beam.Beam(["--socket", "/var/run/docker.sock",
+                   "--exclusive", "--internal"])
 
     yield b
 
@@ -33,7 +34,12 @@ def test_registering_exposed_excluded_services(working_client):
 
 def test_registering_exposed_included_services_miss(working_client):
     container = working_client.dc.containers.run(
-        "redis", detach=True, ports={'6379/tcp': 16379}, labels={"BEAM_PORTS": "56379/tcp"})
+        "redis",
+        detach=True,
+        ports={
+            '6379/tcp': 16379},
+        labels={
+            "BEAM_PORTS": "56379/tcp"})
 
     services = working_client.get_services_to_register(container.attrs)
 
@@ -42,7 +48,12 @@ def test_registering_exposed_included_services_miss(working_client):
 
 def test_registering_exposed_included_services(working_client):
     container = working_client.dc.containers.run(
-        "redis", detach=True, ports={'6379/tcp': 16379}, labels={"BEAM_PORTS": "6379/tcp"})
+        "redis",
+        detach=True,
+        ports={
+            '6379/tcp': 16379},
+        labels={
+            "BEAM_PORTS": "6379/tcp"})
 
     services = working_client.get_services_to_register(container.attrs)
 
