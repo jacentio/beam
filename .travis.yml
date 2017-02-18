@@ -1,8 +1,14 @@
 language: python
+dist: trusty
+sudo: required
+services:
+- docker
 python:
   - 2.7
 install:
-  - pip install -r tests/requirements.txt
+- docker pull redis
+- pip install -r requirements.txt
+- pip install -r tests/requirements.txt
 script:
   - tox
 after_success:
