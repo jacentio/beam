@@ -46,16 +46,16 @@ class Beam(object):
         parser.add_argument('--drivers', nargs='+')
         parser.add_argument('--hostname', action="store", dest="hostname")
         parser.add_argument(
-            '--inclusive',
-            dest='inclusive',
-            action='store_false')
+            '--exclusive',
+            dest='exclusive',
+            action='store_true')
         parser.add_argument('--internal', dest='internal', action='store_true')
         parser.add_argument('--socket', action="store", dest="socket")
         parser.add_argument('--ttl', action="store", dest="ttl")
 
         parser.set_defaults(drivers=[])
         parser.set_defaults(hostname=self.get_ip_address())
-        parser.set_defaults(inclusive=True)
+        parser.set_defaults(exclusive=False)
         parser.set_defaults(internal=False)
         parser.set_defaults(socket="/tmp/docker.sock")
         parser.set_defaults(ttl=30)
@@ -83,13 +83,13 @@ class Beam(object):
         services = []
         only_services = []
 
-        if not self.args.inclusive:
+        if self.args.exclusive:
             if 'BEAM_PORTS' not in container['Config']['Labels']:
                 return services
             else:
                 only_services = [
                     x if '/' in x else '{}/tcp'.format(x) for x in
-                    container['Config']['Labels']['BEAM_PORTS']]
+                    container['Config']['Labels']['BEAM_PORTS'].split(',')]
 
         if self.args.internal:
 

@@ -13,11 +13,6 @@ def working_client():
     conts = b.dc.containers.list()
     [cont.remove(force=True) for cont in conts]
 
-def cleanup(b):
-    return
-    conts = b.dc.containers.list()
-    return [cont.remove(force=True) for cont in conts]
-
 
 def test_logger(working_client):
     assert isinstance(working_client.log, logging.Logger)
@@ -32,7 +27,6 @@ def test_empty_drivers_list(working_client):
 
 
 def test_registering_no_published_services(working_client):
-    cleanup(working_client)
     container = working_client.dc.containers.run("redis", detach=True)
 
     services = working_client.get_services_to_register(container.attrs)
@@ -41,7 +35,6 @@ def test_registering_no_published_services(working_client):
 
 
 def test_registering_published_services(working_client):
-    cleanup(working_client)
     container = working_client.dc.containers.run(
         "redis", detach=True, ports={'6379/tcp': 16379})
 
@@ -62,7 +55,6 @@ def test_registering_published_services(working_client):
 
 
 def test_registering_published_service_with_default_tag(working_client):
-    cleanup(working_client)
     container = working_client.dc.containers.run(
         "redis",
         detach=True,
@@ -90,7 +82,6 @@ def test_registering_published_service_with_default_tag(working_client):
 
 def test_registering_published_service_with_default_and_service_tag(
         working_client):
-    cleanup(working_client)
     container = working_client.dc.containers.run(
         "redis",
         detach=True,
@@ -119,7 +110,6 @@ def test_registering_published_service_with_default_and_service_tag(
 
 
 def test_registering_published_service_with_default_attributes(working_client):
-    cleanup(working_client)
     container = working_client.dc.containers.run(
         "redis",
         detach=True,
@@ -147,7 +137,6 @@ def test_registering_published_service_with_default_attributes(working_client):
 
 def test_registering_published_service_with_default_and_service_attributes(
         working_client):
-    cleanup(working_client)
     container = working_client.dc.containers.run(
         "redis",
         detach=True,
@@ -176,7 +165,6 @@ def test_registering_published_service_with_default_and_service_attributes(
 
 def test_registering_published_service_with_default_and_service_attributes_mix(
         working_client):
-    cleanup(working_client)
     container = working_client.dc.containers.run("redis", detach=True, ports={'6379/tcp': 16379}, labels={"BEAM_TESTING": "foo", "BEAM_6379_TCP_TESTING": "bar", "BEAM_SHARED": "test_shared", "BEAM_6379_TCP_DEDICATED": "test_dedicated"})
 
     services = working_client.get_services_to_register(container.attrs)
