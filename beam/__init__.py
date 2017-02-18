@@ -92,7 +92,13 @@ class Beam(object):
                     container['Config']['Labels']['BEAM_PORTS']]
 
         if self.args.internal:
-            for service in container['Config']['ExposedPorts'].keys():
+
+            try:
+                ports = container['Config']['ExposedPorts'].keys()
+            except AttributeError:
+                return services
+
+            for service in ports:
                 if only_services and service not in only_services:
                     continue
 
@@ -106,14 +112,18 @@ class Beam(object):
                     s.name = '{}-{}'.format(
                         container['Name'].lstrip('/'), container_port)
                 s.ip = self.args.hostname
-                s.port = container_port
+                s.port = int(container_port)
                 s.proto = proto
                 s.id = container['Config']['Hostname']
 
                 services.append(s)
         else:
-            for service, cfg in container[
-                    'NetworkSettings']['Ports'].iteritems():
+            try:
+                ports = container['NetworkSettings']['Ports'].iteritems()
+            except AttributeError:
+                return services
+
+            for service, cfg in ports.iteritems():
                 try:
                     cfg = cfg[0]
                 except TypeError:
@@ -131,7 +141,7 @@ class Beam(object):
                     s.name = '{}-{}'.format(
                         container['Name'].lstrip('/'), container_port)
                 s.ip = self.args.hostname
-                s.port = cfg['HostPort']
+                s.port = int(cfg['HostPort'])
                 s.proto = proto
                 s.id = container['Config']['Hostname']
 
@@ -203,14 +213,13 @@ class Beam(object):
             [driver.add(service, self.args.ttl) for driver in self.drivers]
 
     def run(self):
-        while True:
-            start = time()
-            containers = self.dc.containers.list(filters={'status': 'running'})
-            [self.register_container(x.attrs) for x in containers]
-            end = time()
+        start = time()
+        containers = self.dc.containers.list(filters={'status': 'running'})
+        [self.register_container(x.attrs) for x in containers]
+        end = time()
 
-            duration = end - start
-            self.log.debug('Registration run took {}s'.format(duration))
-            sleep_time = int(self.args.ttl - duration) - 5
-            self.log.debug('Sleeping for {}s'.format(sleep_time))
-            sleep(sleep_time)
+        duration = end - start
+        self.log.debug('Registration run took {}s'.format(duration))
+        sleep_time = int(self.args.ttl - duration) - 5
+        self.log.debug('Sleeping for {}s'.format(sleep_time))
+        sleep(sleep_time)
