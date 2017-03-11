@@ -31,13 +31,15 @@ class Etcd(Driver):
             try:
                 cfg[attr] = os.environ['ETCD_{}'.format(attr.upper())]
             except KeyError:
+                if attr == 'port':
+                    # Set the default ETCD port if it's not provided
+                    cfg[attr] = 2379
                 pass
 
         return cfg
 
     def add(self, service, ttl):
 
-        # print self.get_services()
         etcd_key = '/services/{}'.format(service.name)
 
         self.client.write('{}/containers/{}/ip'.format(etcd_key,
