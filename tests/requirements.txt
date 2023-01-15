@@ -1,4 +1,4 @@
 tox==3.14.0
-pytest==5.2.3
+pytest==7.2.1
 pytest-cov==2.8.1
 codecov==2.0.15
